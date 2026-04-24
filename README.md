@@ -16,10 +16,22 @@ claude_home/
 ## 镜像说明
 
 - 基础镜像：`node:22-bookworm-slim`
-- 安装内容：`git`、`curl`、`@anthropic-ai/claude-code`
-- 容器内用户：`node`（uid=1000，与宿主机 peter 一致）
+- 安装内容：`git`、`curl`、`sudo`、`@anthropic-ai/claude-code`
+- 容器内用户：`node`（uid=1000，与宿主机 peter 一致），拥有容器内免密 sudo 权限
 - 工作目录：`/workspace`（挂载自宿主机 `pod/`）
 - 启动参数：`--dangerously-skip-permissions`（容器内跳过权限审核，不影响宿主机）
+
+## 构建镜像
+
+```bash
+podman build -t claude-code -f Containerfile .
+```
+
+构建完成后可将镜像保存为 tar 文件供离线使用：
+
+```bash
+podman save -o claude-code.tar claude-code
+```
 
 ## 使用方法
 
@@ -67,5 +79,5 @@ podman load -i claude-code.tar
 
 - `--userns=keep-id`：容器内 uid=1000 直接映射到宿主机 uid=1000（peter），挂载目录读写正常
 - `:Z`：SELinux/容器标签重标，允许容器访问挂载卷
-- 容器内无法使用宿主机 sudo，隔离边界为挂载的 `pod/` 目录
+- 容器内 `sudo` 仅在容器 user namespace 内生效，uid=0 映射到宿主机上的高位无特权 uid，不等于宿主机 root，隔离边界为挂载的 `pod/` 目录
 - `claude-config/` 与宿主机 `~/.claude/` 独立，`claude-config.json` 与宿主机 `~/.claude.json` 独立，容器内配置变更不影响宿主机
