@@ -63,7 +63,21 @@ claude login
 如需通过代理或自定义 API 地址：
 
 ```bash
-export ANTHROPIC_BASE_URL="https://your-proxy.example.com"
+  export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+  export ANTHROPIC_AUTH_TOKEN="your_api_key"
+  export API_TIMEOUT_MS="3000000"
+
+  export DISABLE_TELEMETRY="1"
+  export DISABLE_ERROR_REPORTING="1"
+  export DISABLE_FEEDBACK_COMMAND="1"
+  export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY="1"
+  export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="1"
+
+  export ANTHROPIC_MODEL="deepseek-v4-flash[1m]"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="deepseek-v4-flash[1m]"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="deepseek-v4-flash[1m]"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="deepseek-v4-pro[1m]"
+  echo "✅ Claude Code 已切换到deepseek-personal"
 ./run.sh
 ```
 
